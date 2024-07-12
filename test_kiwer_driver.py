@@ -47,3 +47,8 @@ class TestKiwerDriver(TestCase):
     def test_get_price(self, mock):
         current_price = self.kiwer_driver.get_price(TEST_CODE)
         self.assertEqual(BUY_PRICE, current_price)
+
+    @patch.object(KiwerAPI, 'current_price', return_value=SELL_PRICE)
+    def test_get_price_after_3(self, mock):
+        current_price = self.kiwer_driver.get_price(TEST_CODE, 3)
+        self.assertEqual(SELL_PRICE, current_price)
