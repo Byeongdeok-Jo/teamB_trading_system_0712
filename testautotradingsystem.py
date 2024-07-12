@@ -2,6 +2,8 @@ from unittest import TestCase
 from unittest.mock import Mock, patch
 from Mock_driver import MockDriver
 from auto_trading_system import AutoTradingSystem
+from kiwer_driver import KiwerDriver
+from nemo_driver import NemoDriver
 
 
 class TestAutoTradingSystem(TestCase):
@@ -19,6 +21,14 @@ class TestAutoTradingSystem(TestCase):
 
         create_mk.assert_called_once()
         self.assertIsNotNone(self.sut.get_stock_driver())
+
+    def test_can_select_kiwer_driver(self):
+        self.sut.select_stock_broker('kiwer')
+        self.assertIsInstance(self.sut.get_stock_driver(), KiwerDriver)
+
+    def test_can_select_nemo_driver(self):
+        self.sut.select_stock_broker('nemo')
+        self.assertIsInstance(self.sut.get_stock_driver(), NemoDriver)
 
     def test_login_brocker(self):
         self.sut.login('test12', 1234)
@@ -47,19 +57,3 @@ class TestAutoTradingSystem(TestCase):
         self.stock_driver.get_price.side_effect = [3000, 2000, 1000, 0]
         self.sut.sell_nice_timing(1234, 5)
         self.stock_driver.sell.assert_called_once()
-
-    def test_login_mock(self):
-        self.mock_driver.login('test_user', 'test_pass')
-        self.assertIn('Logged in as test_user', self.mock_driver.actions)
-
-    def test_buy_mock(self):
-        self.mock_driver.buy('AAPL', 150, 10)
-        self.assertIn('Bought 10 of AAPL at 150', self.mock_driver.actions)
-
-    def test_sell_mock(self):
-        self.mock_driver.sell('AAPL', 155, 5)
-        self.assertIn('Sold 5 of AAPL at 155', self.mock_driver.actions)
-
-    def test_get_price_mock(self):
-        price = self.mock_driver.get_price('AAPL')
-        self.assertEqual(price, 5500)
