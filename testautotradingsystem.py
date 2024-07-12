@@ -7,6 +7,7 @@ from kiwer_driver import KiwerDriver
 from nemo_driver import NemoDriver
 
 STOCK_CODE_SAMSUNG = 'A005930'
+STOCK_CODE_HYNIX = '000660'
 
 INIT_BUDGET = 1000000
 
@@ -70,6 +71,10 @@ class TestAutoTradingSystem(TestCase):
         self.sut.sell_nice_timing(1234, 5)
 
         self.stock_driver.sell.assert_called_once()
+
+    def test_correct_stock_code(self):
+        self.assertIsNotNone(self.sut.get_price(STOCK_CODE_SAMSUNG))
+        self.assertIsNotNone(self.sut.get_price(STOCK_CODE_HYNIX))
 
     def test_incorrect_stock_code(self):
         invalid_stock_codes = ['1234', '41231', 'AA12334', 'D12345']
