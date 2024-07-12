@@ -3,6 +3,9 @@ from nemo_driver import NemoDriver
 from stock_driver import IStockDriver
 
 
+CORRECT_LEN_WITHOUT_CHAR = 6
+CORRECT_LEN_WITH_CHAR = 7
+
 class AutoTradingSystem:
     _stock_driver: IStockDriver
 
@@ -75,15 +78,15 @@ class AutoTradingSystem:
 
     def _is_correct_code(self, code):
         length = len(code)
-        if length != 6 and length != 7:
+        if length != CORRECT_LEN_WITHOUT_CHAR and length != CORRECT_LEN_WITH_CHAR:
             return False
         start_idx = 0
-        if length == 7:
+        if length == CORRECT_LEN_WITH_CHAR:
             if not self._is_first_char_possible(code[0]):
                 return False
             start_idx = 1
         all_digit = True
-        for i in range(6):
+        for i in range(CORRECT_LEN_WITHOUT_CHAR):
             all_digit = all_digit and code[i + start_idx].isdigit()
         return all_digit
 
