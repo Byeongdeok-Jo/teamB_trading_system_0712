@@ -7,11 +7,11 @@ class IStockDriver(ABC):
         pass
 
     @abstractmethod
-    def buy(self, stock_code, count, price):
+    def buy(self, stock_code, price, count):
         pass
 
     @abstractmethod
-    def sell(self, stock_code, count, price):
+    def sell(self, stock_code, price, count):
         pass
 
     @abstractmethod
