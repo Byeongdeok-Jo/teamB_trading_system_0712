@@ -44,17 +44,24 @@ class TestAutoTradingSystem(TestCase):
         self.stock_driver.login.assert_called()
 
     def test_buy_stock(self):
-        self.sut.buy(1, 2, 3)
+        self.sut.buy(STOCK_CODE_SAMSUNG, 2, 3)
 
         self.stock_driver.buy.assert_called()
 
     def test_sell_stock(self):
-        self.sut.sell(1234, 100, 50)
+        self.sut.sell(STOCK_CODE_SAMSUNG, 100, 50)
 
         self.stock_driver.sell.assert_called()
 
     def test__successful_get_price_stock(self):
-        stock_code_list = [1234, 2345, 3456, 4567, 1234, 1111]
+        stock_code_list = [
+            STOCK_CODE_SAMSUNG,
+            STOCK_CODE_SAMSUNG,
+            STOCK_CODE_SAMSUNG,
+            STOCK_CODE_HYNIX,
+            STOCK_CODE_HYNIX,
+            STOCK_CODE_HYNIX
+        ]
         for code in stock_code_list:
             self.sut.get_price(code)
 
@@ -62,13 +69,13 @@ class TestAutoTradingSystem(TestCase):
 
     def test_buy_nice_timing(self):
         self.stock_driver.get_price.side_effect = [1000, 2000, 3000, 4000]
-        self.sut.buy_nice_timing(1234, 2000)
+        self.sut.buy_nice_timing(STOCK_CODE_HYNIX, 2000)
 
         self.stock_driver.buy.assert_called_once()
 
     def test_sell_nice_timing(self):
         self.stock_driver.get_price.side_effect = [3000, 2000, 1000, 0]
-        self.sut.sell_nice_timing(1234, 5)
+        self.sut.sell_nice_timing(STOCK_CODE_HYNIX, 5)
 
         self.stock_driver.sell.assert_called_once()
 
