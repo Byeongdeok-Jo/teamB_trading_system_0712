@@ -82,10 +82,7 @@ class AutoTradingSystem:
             return False
         if length == CORRECT_LEN_WITH_CHAR and not self._is_first_char_possible(code[0]):
             return False
-        all_digit = True
-        for i in range(CORRECT_LEN_WITHOUT_CHAR):
-            all_digit = all_digit and code[-1 - i].isdigit()
-        return all_digit
+        return code[length - CORRECT_LEN_WITHOUT_CHAR:].isdigit()
 
     def _is_first_char_possible(self, char):
         return char == 'A' or char == 'B' or char == 'C' or char == 'K'
