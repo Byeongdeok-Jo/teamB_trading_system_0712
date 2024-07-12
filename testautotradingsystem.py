@@ -11,18 +11,10 @@ class TestAutoTradingSystem(TestCase) :
         self.sut.select_stock_brocker('kiwer')
         mk_select_storck_brocker.assert_called()
 
-    @patch.object(AutoTradingSystem, 'login', return_value='pass')
-    def test_successful_login_brocker(self, mk_login, return_value='pass'):
-        self.assertEqual('pass', self.sut.login('test12', 1234))
-
     @patch.object(AutoTradingSystem, 'login')
-    def test_successful_login_brocker(self, mk_login):
+    def test_login_brocker(self, mk_login):
         self.sut.login('test12', 1234)
         mk_login.assert_called()
-
-    @patch.object(AutoTradingSystem, 'login', return_value='fail')
-    def test_unsuccessful_login_brocker(self, mk_login, return_value='fail'):
-        self.assertEqual('fail', self.sut.login('test12', 1234))
 
     @patch.object(AutoTradingSystem, 'buy')
     def test_buy_stock(self, mk_buy):
