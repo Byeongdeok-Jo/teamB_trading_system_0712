@@ -29,7 +29,19 @@ class AutoTradingSystem:
         self._stock_driver.get_price(stock_code, 0)
 
     def buy_nice_timing(self, stock_code, budget):
-        pass
+        prev_2min = self._stock_driver.get_price(stock_code, 2)
+        prev_1min = self._stock_driver.get_price(stock_code, 1)
+        current = self._stock_driver.get_price(stock_code, 0)
+        time_to_buy = prev_2min < prev_1min < current
+        if time_to_buy:
+            buy_count = budget // current
+            self._stock_driver.buy(stock_code, current, buy_count)
 
     def sell_nice_timing(self, stock_code, count):
-        pass
+        prev_2min = self._stock_driver.get_price(stock_code, 2)
+        prev_1min = self._stock_driver.get_price(stock_code, 1)
+        current = self._stock_driver.get_price(stock_code, 0)
+        time_to_sell = prev_2min > prev_1min > current
+        if time_to_sell:
+            self._stock_driver.sell(stock_code, current, count)
+

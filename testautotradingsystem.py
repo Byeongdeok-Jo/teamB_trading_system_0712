@@ -39,22 +39,16 @@ class TestAutoTradingSystem(TestCase):
         self.assertEqual(6, self.stock_driver.get_price.call_count)
 
     def test_buy_nice_timing(self):
-        pass
+        self.stock_driver.get_price.side_effect = [1000, 2000, 3000]
+        self.sut.buy_nice_timing(1234, 2000)
+        self.stock_driver.buy.assert_called_once()
 
     def test_sell_nice_timing(self):
-        pass
-
-    @patch.object(MockDriver, 'get_price', side_effect=[1000, 2000, 3000])
-    def test_buy_nice_timing(self, mk_driver):
-        self.sut.buy_nice_timing(1234, 2000)
-        self.assertEqual(mk_driver.buy_nice_timing.call_count, 1)
-
-    @patch.object(MockDriver, 'get_price', side_effect=[3000, 2000, 1000])
-    def test_sell_nice_timing(self, mk_driver):
+        self.stock_driver.get_price.side_effect = [3000, 2000, 1000]
         self.sut.sell_nice_timing(1234, 5)
-        self.assertEqual(mk_driver.sell_nice_timing.call_count, 1)
+        self.stock_driver.sell.assert_called_once()
 
-        def test_login_mock(self):
+    def test_login_mock(self):
         self.mock_driver.login('test_user', 'test_pass')
         self.assertIn('Logged in as test_user', self.mock_driver.actions)
 
