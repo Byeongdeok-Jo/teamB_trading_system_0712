@@ -1,3 +1,5 @@
+from kiwer_driver import KiwerDriver
+from nemo_driver import NemoDriver
 from stock_driver import IStockDriver
 
 
@@ -14,7 +16,11 @@ class AutoTradingSystem:
         return self._stock_driver
 
     def create_stock_driver_from_name(self, name: str):
-        raise NotImplementedError()
+        if name.lower() == 'kiwer':
+            return KiwerDriver()
+        if name.lower() == 'nemo':
+            return NemoDriver()
+        return IStockDriver()
 
     def login(self, id, passwd):
         self._stock_driver.login(id, passwd)
