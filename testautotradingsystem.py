@@ -1,37 +1,41 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
-from autotradingsystem import AutoTradingSystem
-class TestAutoTradingSystem(TestCase) :
+
+from auto_trading_system import AutoTradingSystem
+
+
+class TestAutoTradingSystem(TestCase):
     def setUp(self):
         super().setUp()
         self.sut = AutoTradingSystem()
+        self.stock_driver = Mock()  # TODO: Replace Mock() with MockDriver
+        self.sut.set_stock_driver(self.stock_driver)
 
-    @patch.object(AutoTradingSystem, 'select_stock_brocker', return_value='kiwer')
-    def test_select_stock_brocker(self, mk_select_storck_brocker):
-        self.sut.select_stock_brocker('kiwer')
-        mk_select_storck_brocker.assert_called()
+    @patch.object(AutoTradingSystem, 'create_stock_driver_from_name', return_value=Mock())
+    def test_select_stock_broker(self, create_mk):
+        self.sut.set_stock_driver(None)
+        self.sut.select_stock_broker('kiwer')
 
-    @patch.object(AutoTradingSystem, 'login')
-    def test_login_brocker(self, mk_login):
+        create_mk.assert_called_once()
+        self.assertIsNotNone(self.sut.get_stock_driver())
+
+    def test_login_brocker(self):
         self.sut.login('test12', 1234)
-        mk_login.assert_called()
+        self.stock_driver.login.assert_called()
 
-    @patch.object(AutoTradingSystem, 'buy')
-    def test_buy_stock(self, mk_buy):
-        self.sut.buy(1234, 100, 50)
-        mk_buy.assert_called()
+    def test_buy_stock(self):
+        self.sut.buy(1, 2, 3)
+        self.stock_driver.buy.assert_called()
 
-    @patch.object(AutoTradingSystem, 'sell')
-    def test_sell_stock(self, mk_sell):
+    def test_sell_stock(self):
         self.sut.sell(1234, 100, 50)
-        mk_sell.assert_called()
+        self.stock_driver.sell.assert_called()
 
-    @patch.object(AutoTradingSystem, 'current_price')
-    def test__successful_get_price_stock(self, mk_current_price):
+    def test__successful_get_price_stock(self):
         stock_code_list = [1234, 2345, 3456, 4567, 1234, 1111]
         for code in stock_code_list:
-            self.sut.current_price(code)
-        self.assertEqual(6, mk_current_price.call_count)
+            self.sut.get_price(code)
+        self.assertEqual(6, self.stock_driver.get_price.call_count)
 
     def test_buy_nice_timing(self):
         pass
