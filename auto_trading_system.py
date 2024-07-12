@@ -13,20 +13,20 @@ class AutoTradingSystem:
     def get_stock_driver(self):
         return self._stock_driver
 
-    def create_stock_driver_from_name(self):
-        return None
+    def create_stock_driver_from_name(self, name: str):
+        raise NotImplementedError()
 
     def login(self, id, passwd):
-        pass
+        self._stock_driver.login(id, passwd)
 
     def buy(self, stock_code, price, count):
-        pass
+        self._stock_driver.buy(stock_code, price, count)
 
     def sell(self, stock_code, price, count):
-        pass
+        self._stock_driver.sell(stock_code, price, count)
 
     def get_price(self, stock_code):
-        pass
+        self._stock_driver.get_price(stock_code, 0)
 
     def buy_nice_timing(self, stock_code, budget):
         pass
