@@ -1,6 +1,5 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
-
 from Mock_driver import MockDriver
 from auto_trading_system import AutoTradingSystem
 
@@ -45,7 +44,17 @@ class TestAutoTradingSystem(TestCase):
     def test_sell_nice_timing(self):
         pass
 
-    def test_login_mock(self):
+    @patch.object(MockDriver, 'get_price', side_effect=[1000, 2000, 3000])
+    def test_buy_nice_timing(self, mk_driver):
+        self.sut.buy_nice_timing(1234, 2000)
+        self.assertEqual(mk_driver.buy_nice_timing.call_count, 1)
+
+    @patch.object(MockDriver, 'get_price', side_effect=[3000, 2000, 1000])
+    def test_sell_nice_timing(self, mk_driver):
+        self.sut.sell_nice_timing(1234, 5)
+        self.assertEqual(mk_driver.sell_nice_timing.call_count, 1)
+
+        def test_login_mock(self):
         self.mock_driver.login('test_user', 'test_pass')
         self.assertIn('Logged in as test_user', self.mock_driver.actions)
 
