@@ -60,3 +60,6 @@ class AutoTradingSystem:
         current = self._stock_driver.get_price(stock_code, 0)
         time_to_sell = prev_2min > prev_1min > current
         return time_to_sell
+
+    def get_current_budget(self):
+        return (0, 0)
