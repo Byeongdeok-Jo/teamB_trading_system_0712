@@ -2,9 +2,9 @@ from kiwer_driver import KiwerDriver
 from nemo_driver import NemoDriver
 from stock_driver import IStockDriver
 
-
 CORRECT_LEN_WITHOUT_CHAR = 6
 CORRECT_LEN_WITH_CHAR = 7
+
 
 class AutoTradingSystem:
     _stock_driver: IStockDriver
@@ -80,14 +80,11 @@ class AutoTradingSystem:
         length = len(code)
         if length != CORRECT_LEN_WITHOUT_CHAR and length != CORRECT_LEN_WITH_CHAR:
             return False
-        start_idx = 0
-        if length == CORRECT_LEN_WITH_CHAR:
-            if not self._is_first_char_possible(code[0]):
-                return False
-            start_idx = 1
+        if length == CORRECT_LEN_WITH_CHAR and not self._is_first_char_possible(code[0]):
+            return False
         all_digit = True
         for i in range(CORRECT_LEN_WITHOUT_CHAR):
-            all_digit = all_digit and code[i + start_idx].isdigit()
+            all_digit = all_digit and code[-1 - i].isdigit()
         return all_digit
 
     def _is_first_char_possible(self, char):
