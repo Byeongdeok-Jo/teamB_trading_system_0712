@@ -41,14 +41,14 @@ class TestAutoTradingSystem(TestCase):
     def test_sell_nice_timing(self):
         pass
 
-    @patch.object(KiwerDriver, 'get_price', side_effect=[1000, 2000, 3000])
-    def test_buy_nice_timing_kiwer(self, mk_driver):
+    @patch.object(MockDriver, 'get_price', side_effect=[1000, 2000, 3000])
+    def test_buy_nice_timing(self, mk_driver):
         self.sut.select_stock_brocker('kiwer')
         self.sut.buy_nice_timing(1234, 2000)
         self.assertEqual(mk_driver.buy_nice_timing.call_count, 1)
 
-    @patch.object(KiwerDriver, 'get_price', side_effect=[3000, 2000, 1000])
-    def test_sell_nice_timing_from_kiwer(self, mk_driver):
+    @patch.object(MockDriver, 'get_price', side_effect=[3000, 2000, 1000])
+    def test_sell_nice_timing(self, mk_driver):
         self.sut.select_stock_brocker('kiwer')
         self.sut.sell_nice_timing(1234, 5)
         self.assertEqual(mk_driver.sell_nice_timing.call_count, 1)
