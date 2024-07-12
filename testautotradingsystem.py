@@ -2,7 +2,6 @@ from unittest import TestCase
 from unittest.mock import Mock, patch
 from Mock_driver import MockDriver
 from auto_trading_system import AutoTradingSystem
-from kiwer_driver import KiwerDriver
 
 
 class TestAutoTradingSystem(TestCase):
@@ -40,22 +39,14 @@ class TestAutoTradingSystem(TestCase):
         self.assertEqual(6, self.stock_driver.get_price.call_count)
 
     def test_buy_nice_timing(self):
-        pass
+        self.stock_driver.get_price.side_effect = [1000, 2000, 3000, 4000]
+        self.sut.buy_nice_timing(1234, 2000)
+        self.stock_driver.buy.assert_called_once()
 
     def test_sell_nice_timing(self):
-        pass
-
-    @patch.object(KiwerDriver, 'get_price', side_effect=[1000, 2000, 3000])
-    def test_buy_nice_timing(self, mk_driver):
-        self.sut.set_stock_driver('kiwer')
-        self.sut.buy_nice_timing(1234, 2000)
-        self.assertEqual(mk_driver.buy_nice_timing.call_count, 1)
-
-    @patch.object(KiwerDriver, 'get_price', side_effect=[3000, 2000, 1000])
-    def test_sell_nice_timing(self, mk_driver):
-        self.sut.set_stock_driver('kiwer')
+        self.stock_driver.get_price.side_effect = [3000, 2000, 1000, 0]
         self.sut.sell_nice_timing(1234, 5)
-        self.assertEqual(mk_driver.sell_nice_timing.call_count, 1)
+        self.stock_driver.sell.assert_called_once()
 
     def test_login_mock(self):
         self.mock_driver.login('test_user', 'test_pass')
@@ -72,13 +63,3 @@ class TestAutoTradingSystem(TestCase):
     def test_get_price_mock(self):
         price = self.mock_driver.get_price('AAPL')
         self.assertEqual(price, 5500)
-
-    # def test_buy_nice_timing(self):
-    #     self.mock_driver.set_mock_price(500)
-    #     self.app.buy_nice_timing('AAPL', 1000)
-    #     self.assertIn('Bought 2 of AAPL at 500', self.mock_driver.actions)
-    #
-    # def test_sell_nice_timing(self):
-    #     self.mock_driver.set_mock_price(600)
-    #     self.app.sell_nice_timing('AAPL', 3)
-    #     self.assertIn('Sold 3 of AAPL at 600', self.mock_driver.actions)
