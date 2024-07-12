@@ -2,7 +2,7 @@ import random
 from time import sleep
 
 class NemoAPI:
-    def cerification(self, id, password):
+    def certification(self, id, password):
         print('[NEMO]' + id + ' login GOOD')
 
     def purchasing_stock(self, stock_code, price, count):
