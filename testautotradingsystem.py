@@ -88,6 +88,7 @@ class TestAutoTradingSystem(TestCase):
 
     def test_get_init_budget(self):
         self.assertEqual(self.get_current_money_budget(), INIT_BUDGET)
+        self.assertEqual(self.get_current_stock_budget(), 0)
 
     def test_buget_updated_correctly_after_buy(self):
         self.stock_driver.get_price.return_value = 5000
