@@ -1,7 +1,9 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 from autotradingsystem import AutoTradingSystem
-class TestAutoTradingSystem(TestCase) :
+
+
+class TestAutoTradingSystem(TestCase):
     def setUp(self):
         super().setUp()
         self.sut = AutoTradingSystem()
@@ -39,7 +41,7 @@ class TestAutoTradingSystem(TestCase) :
     def test_sell_nice_timing(self):
         pass
 
-    @patch.object(KiwerDriver, 'get_price', side_effect = [1000, 2000, 3000])
+    @patch.object(KiwerDriver, 'get_price', side_effect=[1000, 2000, 3000])
     def test_buy_nice_timing_kiwer(self, mk_driver):
         self.sut.select_stock_brocker('kiwer')
         self.sut.buy_nice_timing(1234, 2000)
